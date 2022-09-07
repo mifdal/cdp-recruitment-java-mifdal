@@ -10,6 +10,7 @@ function EventService($http){
     return {
         deleteEvent:deleteEvent,
         getEvents:getEvents,
+        getFiltredEvents:getFiltredEvents,
         updateStars: updateStars
     };
 
@@ -26,6 +27,15 @@ function EventService($http){
         }
     }
 
+    function getFiltredEvents(query){
+        return $http.get('/api/events/search/'+query)
+            .then(getFiltredEventsComplete);
+
+        function getFiltredEventsComplete(response){
+            return response.data;
+        }
+    }
+
     function updateStars(event){
         return $http.put('/api/events/' + event.id, event);
     }
@@ -35,6 +45,7 @@ function EventsController(EventService){
     var vm = this;
     vm.deleteEvent = deleteEvent;
     vm.updateStars = updateStars;
+    vm.getFiltredEvents = getFiltredEvents;
 
     activate();
 
@@ -56,5 +67,17 @@ function EventsController(EventService){
 
     function updateStars(event){
         return EventService.updateStars(event);
+    }
+
+    function getFiltredEvents(query){
+        if (query == "") {
+            return activate()
+        }else {
+            return EventService.getFiltredEvents(query)
+                .then(function(events) {
+                    vm.events = events;
+                    return vm.events;
+                });
+        }
     }
 }
