@@ -26,6 +26,9 @@
             </div>
 
             <div ng-controller="EventsController as events" ng-cloak class="ng-cloak">
+                <div>
+                    <input type="search" id="search" placeholder="Search with member name" ng-model="searchTerm" ng-change="events.getFiltredEvents(searchTerm)" style="width: 100%" />
+                </div>
                 <div class="" ng-hide="events.events.length">Aucun Event trouvé</div>
 
                 <div class="media" ng-repeat="event in events.events track by event.id">
