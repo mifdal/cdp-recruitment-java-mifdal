@@ -29,4 +29,8 @@ public class EventService {
 
         return events;
     }
+
+    public void updateReview(Long id, Event event) {
+        eventRepository.updateReview(id, event.getNbStars(), event.getComment());
+    }
 }
