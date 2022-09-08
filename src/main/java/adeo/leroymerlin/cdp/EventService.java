@@ -46,6 +46,10 @@ public class EventService {
             // Remove events with no band
             if (event.getBands().size() == 0) eventIterator.remove();
 
+            // Add band count at each event
+            event.setTitle(addCountToElement(event.getTitle(), event.getBands().size()));
+            // Add Members count at each band
+            event.getBands().forEach(band -> band.setName(addCountToElement(band.getName(), band.getMembers().size())));
         }
 
         return events;
@@ -59,5 +63,11 @@ public class EventService {
         Pattern p = Pattern.compile(query.toLowerCase());
         Matcher m = p.matcher(memberName.toLowerCase());
         return m.find();
+    }
+
+    private String addCountToElement(String element, Integer count){
+        if(!element.endsWith("]"))
+            return element+" ["+count+"]";
+        else return element;
     }
 }
